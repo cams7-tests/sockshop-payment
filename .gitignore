@@ -124,3 +124,6 @@ docker/payment
 vendor/**
 !vendor/manifest
 coverage.out
+
+go.sum
+.history/
