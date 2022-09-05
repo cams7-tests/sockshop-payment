@@ -36,14 +36,14 @@ func WireUp(ctx context.Context, declineAmount float32, tracer stdopentracing.Tr
 	// Service domain.
 	var service Service
 	{
-		service = NewAuthorisationService(declineAmount)
-		service = LoggingMiddleware(logger)(service)
+		service = NewAuthorisationService(declineAmount) //service
+		service = LoggingMiddleware(logger)(service) //logging
 	}
 
 	// Endpoint domain.
-	endpoints := MakeEndpoints(service, tracer)
+	endpoints := MakeEndpoints(service, tracer) //endpoints
 
-	router := MakeHTTPHandler(ctx, endpoints, logger, tracer)
+	router := MakeHTTPHandler(ctx, endpoints, logger, tracer) //transport
 
 	httpMiddleware := []middleware.Interface{
 		middleware.Instrument{
