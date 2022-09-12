@@ -1,13 +1,12 @@
 FROM golang:1.19.0-alpine3.16
 
-COPY . /go/src/github.com/microservices-demo/payment
-WORKDIR /go/src/github.com/microservices-demo/payment
+COPY . $GOPATH/src/github.com/microservices-demo/payment
+WORKDIR $GOPATH/src/github.com/microservices-demo/payment
 
 RUN apk update && apk add --no-cache gcc libc-dev
-RUN rm -f /go/src/github.com/microservices-demo/payment/go.sum
-RUN go mod tidy && go mod vendor
+
 RUN go test
-RUN cd /go/src/github.com/microservices-demo/payment/cmd/paymentsvc && go install
+RUN cd $GOPATH/src/github.com/microservices-demo/payment/cmd/paymentsvc && go install
 
 FROM alpine:3.16
 
@@ -27,6 +26,6 @@ LABEL org.label-schema.vendor="Weaveworks" \
   org.label-schema.url="https://github.com/cams7-tests/sockshop-payment" \
   org.label-schema.vcs-url="github.com/cams7-tests/sockshop-payment.git" \
   org.label-schema.vcs-ref="${COMMIT}" \
-  org.label-schema.schema-version="1.0.0"
+  org.label-schema.schema-version="1.0.1"
 
 CMD ["/app", "-port=80"]
